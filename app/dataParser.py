@@ -5,7 +5,8 @@ class Filter:
         pass
 
     def filter_player(self, player):
-        pass
+        print(json.dumps(player, indent=4))
+        return player
 
     def filter_match(self, match):
         pass

@@ -34,7 +34,10 @@ def get_general_conf(name):
 generalconf = get_general_conf('GENERAL')
 tokens = get_general_conf('TOKENS')
 client = discord.Client()
-controller = Controller(generalconf, tokens)
+with open("./spec/players.json", "r") as pl:
+    controller = Controller(generalconf,
+                            tokens,
+                            json.loads(pl.read()))
 
 
 @client.event
@@ -55,11 +58,12 @@ async def on_ready():
 
 
 if __name__ == "__main__":
-    if generalconf["log"]=="1":
+    if generalconf["log"] == "1":
         logging.basicConfig(
             format='%(asctime)s %(levelname)s:%(message)s',
             level=logging.DEBUG)
         logging.info('INSSMG')
-    client.run(tokens["discord_token"])
+    # client.run(tokens["discord_token"])
 
     # print(json.dumps(wp.get_match("1b4a8dfe-5d4f-47e3-bbad-8200c9861463"), indent=4))
+    controller.get_player("Bocata")
