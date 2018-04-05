@@ -4,6 +4,7 @@ import json
 import logging
 import configparser
 from wrapper import PubgWrapper
+from dataParser import Filter
 
 
 def ConfigSectionMap(section, Config):
@@ -46,4 +47,4 @@ if __name__ == "__main__":
 
     wp = PubgWrapper(key, generalConf)
 
-    print json.dumps(wp.get_player_id("account.fdddd9dfa3954ad78458e9e9c1172bbb"), indent=4)
+    print json.dumps(wp.get_match("1b4a8dfe-5d4f-47e3-bbad-8200c9861463"), indent=4)
