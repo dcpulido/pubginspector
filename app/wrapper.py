@@ -26,6 +26,6 @@ class PubgWrapper:
         pass
 
 if __name__ == "__main__":
-    print json.dumps(json.loads(r.text), indent=4)
+    print (json.dumps(json.loads(r.text), indent=4))
 
-    print len(data["data"]["relationships"]["matches"]["data"])
+    print (len(data["data"]["relationships"]["matches"]["data"]))

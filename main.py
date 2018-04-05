@@ -3,8 +3,8 @@ sys.path.insert(0, "./app")
 import json
 import logging
 import configparser
-from wrapper import PubgWrapper
-from dataParser import Filter
+import discord
+from controller import Controller
 
 
 def ConfigSectionMap(section, Config):
@@ -31,20 +31,35 @@ def get_general_conf(name):
     return myprior
 
 
-def get_key():
-    with open("./conf/key", "r") as key:
-        return key.read()
+generalconf = get_general_conf('GENERAL')
+tokens = get_general_conf('TOKENS')
+client = discord.Client()
+controller = Controller(generalconf, tokens)
+
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+    if message.content[0] == "!":
+        msg = controller.parse_message(message, client)
+        await client.send_message(message.channel, msg)
+
+
+@client.event
+async def on_ready():
+    print('Logged in as')
+    print(client.user.name)
+    print(client.user.id)
+    print('------')
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        format='%(asctime)s %(levelname)s:%(message)s',
-        level=logging.DEBUG)
-    logging.info('INSSMG')
+    if generalconf["log"]=="1":
+        logging.basicConfig(
+            format='%(asctime)s %(levelname)s:%(message)s',
+            level=logging.DEBUG)
+        logging.info('INSSMG')
+    client.run(tokens["discord_token"])
 
-    generalConf = get_general_conf("GENERAL")
-    key = get_key()
-
-    wp = PubgWrapper(key, generalConf)
-
-    print json.dumps(wp.get_match("1b4a8dfe-5d4f-47e3-bbad-8200c9861463"), indent=4)
+    # print(json.dumps(wp.get_match("1b4a8dfe-5d4f-47e3-bbad-8200c9861463"), indent=4))
